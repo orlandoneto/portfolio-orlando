@@ -1,10 +1,12 @@
 import React from 'react'
-import BaseLayout from '../../components/layouts/BaseLayout'
+import BaseLayout from '../components/layouts/BaseLayout'
+import BasePage from '../components/BasePage'
+
 import { withRouter } from 'next/router'
 
 class Portfolio extends React.Component {
 
-    static async getInitialProps({query}) {
+    static async getInitialProps({ query }) {
         let post = {};
         const postId = query.id
         try {
@@ -20,10 +22,12 @@ class Portfolio extends React.Component {
     render() {
         const { post } = this.props
         return (
-            <BaseLayout>
-                <h1>{post.title}</h1>
-                <h2>{post.body}</h2>
-                <p>{post.id}</p>
+            <BaseLayout {...this.props}>
+                <BasePage>
+                    <h1>{post.title}</h1>
+                    <h2>{post.body}</h2>
+                    <p>{post.id}</p>
+                </BasePage>
             </BaseLayout>
         )
     }
