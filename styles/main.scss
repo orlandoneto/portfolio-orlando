@@ -1,7 +1,9 @@
+@import "./shared/color";
 @import "./shared/fonts";
 
-//PAGES
+//BASE LAYOUTS
 @import "./index";
+@import "./portfolios";
 
 //COMPONENTS
 @import "./header";
@@ -24,7 +26,24 @@ body {
   position: absolute;
 }
 
+.error {
+  font-weight: 700;
+  color: red;
+}
+
+/* base-page admin */
 .base-page {
-  padding-top: 150px;
-  color: white;
+  padding: 150px 0 100px 0;
+  color: black;
+  background-color: #ecedee;
+  min-height: 100vh;
+
+  .page-header {
+    .page-header-title {
+      font-weight: 700;
+      color: black;
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+  }
 }

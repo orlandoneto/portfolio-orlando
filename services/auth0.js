@@ -2,6 +2,8 @@ import auth0 from 'auth0-js'
 import Cookies from 'js-cookie'
 import jwt from 'jsonwebtoken'
 
+import { getCookieFromReq } from '../helpers/utils'
+
 class Auth0 {
     constructor() {
         this.auth0 = new auth0.WebAuth({
@@ -51,7 +53,6 @@ class Auth0 {
     }
 
     verifyToken = (token) => {
-        debugger
         if (token) {
             const decodedToken = jwt.decode(token)
             const expiresAt = decodedToken.exp = 1000
@@ -61,7 +62,6 @@ class Auth0 {
     }
 
     clientAuth = () => {
-        debugger
         const token = Cookies.getJSON('jwt')
         const verifiedToken = this.verifyToken(token)
         return verifiedToken
@@ -69,13 +69,7 @@ class Auth0 {
 
     serverAuth = (req) => {
         if (req.headers.cookie) {
-            debugger
-
-            const tokenCookie = req.headers.cookie.split(';').find(c => c.trim().startsWith('jwt='))
-
-            if (!tokenCookie) return undefined
-
-            const token = tokenCookie.split('=')[1]
+            const token = getCookieFromReq(req, 'jwt')
             const verifiedToken = this.verifyToken(token)
 
             return verifiedToken

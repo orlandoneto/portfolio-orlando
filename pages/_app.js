@@ -9,7 +9,7 @@ import '../styles/main.scss'
 export default class MyApp extends App {
     static async getInitialProps({ Component, router, ctx }) {
         let pageProps = {}
-        debugger
+
         const user = process.browser ? auth0Client.clientAuth() : auth0Client.serverAuth(ctx.req)
 
         if (Component.getInitialProps) pageProps = await Component.getInitialProps(ctx)

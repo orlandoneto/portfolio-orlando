@@ -2,12 +2,12 @@ import React from 'react'
 import Header from '../shared/Header'
 
 const BaseLayout = props => {
-    debugger
-    const { className, children, auth } = props
+    const { className, children, user, isAuthenticated } = props
+    const headerType = props.headerType || 'default'
 
     return (
         <div className="layout-container" >
-            <Header auth={auth}/>
+            <Header className={`port-nav-${headerType}`} user={user} isAuthenticated={isAuthenticated} />
             <main className={`cover ${className}`}>
                 <div className="wrapper">
                     {children}

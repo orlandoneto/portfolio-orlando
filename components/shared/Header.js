@@ -25,12 +25,16 @@ const Logout = () => <NavLink onClick={auth0Client.logout}
 const Header = (props) => {
     const [isOpen, setIsOpen] = useState(false)
     const toggle = () => setIsOpen(!isOpen)
-    debugger
-    const { user, isAuthenticated } = props.auth
+    
+    const { user, isAuthenticated, className } = props
     return (
         <div>
-            <Navbar className='port-navbar port-default absolute' color="transparent" dark expand="md">
-                <NavbarBrand className='port-navbar-brand' href="/">{user.name}</NavbarBrand>
+            <Navbar className={`port-navbar port-nav-base absolute ${className}`} color="transparent" dark expand="md">
+                <NavbarBrand className='port-navbar-brand' href="/">
+                    {isAuthenticated ?
+                        <span className='text-uppercase font-weight-bold'>{user.name}</span> :
+                        <span className='text-uppercase font-weight-bold'>neto orlando</span>}
+                </NavbarBrand>
                 <NavbarToggler onClick={toggle} />
                 <Collapse isOpen={isOpen} navbar>
                     <Nav className="ml-auto" navbar>
@@ -58,7 +62,8 @@ const Header = (props) => {
                             <NavItem>
                                 <Logout />
                             </NavItem>
-                        }                       
+                        }
+                        
                     </Nav>
                 </Collapse>
             </Navbar>

@@ -13,10 +13,13 @@ class Index extends React.Component {
     }
 
     render() {
-        debugger
         const { user, isAuthenticated } = this.props.auth
         return (
-            <BaseLayout className="cover" {...this.props}>
+            <BaseLayout 
+            className='cover' 
+            user={user} 
+            isAuthenticated={isAuthenticated}
+            headerType='index'>
                 <div className="main-section">
                     <div className="background-image">
                         <img src="/images/background-index.png" />
@@ -46,9 +49,11 @@ class Index extends React.Component {
                                 <div className="hero-welcome-text">
                                     <h1>
                                         Welcome to the portfolio website
-                                         of {isAuthenticated && <span><b> {user.name} </b></span>},
-                                      Get informed, collaborate and
-                                      discover projects I was working on through the years!
+                                         of {isAuthenticated ?
+                                            <span className='text-uppercase font-weight-bold'>{user.name}</span> :
+                                            <span className='text-uppercase font-weight-bold'><b> neto orlando </b></span>},
+                             Get informed, collaborate and
+                             discover projects I was working on through the years!
                                     </h1>
                                 </div>
 

@@ -20,9 +20,9 @@ class Portfolio extends React.Component {
     }
 
     render() {
-        const { post } = this.props
+        const { post, user, isAuthenticated } = this.props.auth
         return (
-            <BaseLayout {...this.props}>
+            <BaseLayout user={user} isAuthenticated={isAuthenticated}>
                 <BasePage>
                     <h1>{post.title}</h1>
                     <h2>{post.body}</h2>

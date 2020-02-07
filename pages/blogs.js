@@ -4,8 +4,10 @@ import BasePage from '../components/BasePage'
 
 class Blogs extends React.Component {
     render() {
+        const { user, isAuthenticated } = this.props.auth
+
         return (
-            <BaseLayout {...this.props}>
+            <BaseLayout user={user} isAuthenticated={isAuthenticated}>
                 <BasePage>
                     <h1>Page Blogs</h1>
                 </BasePage>

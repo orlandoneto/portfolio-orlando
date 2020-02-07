@@ -2,43 +2,80 @@ import React from 'react'
 import BaseLayout from '../components/layouts/BaseLayout'
 import BasePage from '../components/BasePage'
 
-import axios from 'axios'
-import { Link } from '../routes'
+import { Col, Row, Button } from 'reactstrap'
+
+import { Router } from '../routes'
+
+import { getPortfolios, detelePortfolio } from '../actions'
+import PortfolioCard from '../components/portfolios/PortfolioCard'
 
 class Portfolios extends React.Component {
+
     static async getInitialProps() {
-        let posts = [];
+        let portfolios = []
         try {
-            const response = await axios.get('https://jsonplaceholder.typicode.com/posts');
-            posts = response.data
+            const response = await getPortfolios()
+            portfolios = response
         } catch (error) {
-            console.log(error);
+            console.error(error)
         }
 
-        return { posts: posts.splice(0, 10) }
+        return { portfolios }
     }
 
-    renderPosts(posts) {
-        return posts.map((post, index) => {
+    navigateToEdit = (portfolioId, e) => {
+        e.stopPropagation()
+        Router.pushRoute(`/portfolios/${portfolioId}/edit`)
+    }
+
+    displayDeleteWarning = (portfolioId, e) => {
+        e.stopPropagation()
+        const isConfirm = confirm('Are you sure want to delete this portfolio?')
+
+        if (isConfirm) this.deletePortfolio(portfolioId)
+    }
+
+    deletePortfolio = async (portfolioId) => {
+        try {
+            await detelePortfolio(portfolioId)
+            Router.pushRoute('/portfolios')
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
+    renderPortfolios = portfolios => {
+        const { isAuthenticated } = this.props.auth
+
+        return portfolios.map((portfolio, index) => {
             return (
-                <li key={index}>
-                    <Link route={`/portfolio/${post.id}`}>
-                        <a>{post.title}</a>
-                    </Link>
-                </li>
+                <Col md="4" key={index}>
+                    <PortfolioCard portfolio={portfolio}>
+                        {isAuthenticated &&
+                            <React.Fragment>
+                                <Button onClick={(e) => this.navigateToEdit(portfolio._id, e)} color='warning'>Edit</Button>{' '}
+                                <Button onClick={(e) => this.displayDeleteWarning(portfolio._id, e)} color='danger'>Delete</Button>
+                            </React.Fragment>
+                        }
+                    </PortfolioCard>
+                </Col>
             )
         })
     }
 
     render() {
-        const { posts } = this.props
+        const { user, isAuthenticated } = this.props.auth
+        const { portfolios } = this.props
+
         return (
-            <BaseLayout {...this.props}>
-                <BasePage>
-                    <h1>Page Portfolio</h1>
-                    <ul>
-                        {this.renderPosts(posts)}
-                    </ul>
+            <BaseLayout user={user} isAuthenticated={isAuthenticated}>
+                <BasePage className='portfolio-page' title='Portfolio'>
+                    {isAuthenticated &&
+                        <Button onClick={() => Router.pushRoute('/portfolioNew')} color='success' className='create-port-btn'>Create Portfolio</Button>
+                    }
+                    <Row>
+                        {this.renderPortfolios(portfolios)}
+                    </Row>
                 </BasePage>
             </BaseLayout>
         )
